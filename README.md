@@ -1,4 +1,4 @@
-Template
-========
+Statistics
+==========
 
-This is a template package.
+Simple statistics from database.
