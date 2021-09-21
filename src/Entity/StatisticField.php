@@ -68,7 +68,7 @@ final class StatisticField
 		}
 		$this->statistic = $statistic;
 		$this->name = Strings::webalize($name);
-		$this->setLabel(Strings::firstUpper($name));
+		$this->setLabel(Strings::firstUpper(str_replace('-', ' ', $name)));
 		$this->type = $type;
 	}
 
