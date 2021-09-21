@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Nette\Utils\Strings;
+use Nette\Utils\Validators;
 
 /**
  * @method Translation getName(?string $locale = null)
@@ -93,8 +94,13 @@ final class Statistic
 		if (preg_match_all('/:([a-z0-9-]+)/', $this->getSql(), $match) > 0) {
 			$return = $match[1] ?? [];
 		}
+		foreach ($return as $key => $variable) {
+			if (Validators::isNumericInt($variable)) {
+				unset($return[$key]);
+			}
+		}
 
-		return $return;
+		return array_values($return);
 	}
 
 
