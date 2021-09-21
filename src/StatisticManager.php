@@ -82,6 +82,9 @@ final class StatisticManager
 			'/:([a-z0-9-]+)/',
 			static function (array $match) use ($variables): string {
 				$name = $match[1] ?? '';
+				if (Validators::isNumericInt($name)) {
+					return $match[0] ?? '';
+				}
 				if (isset($variables[$name]) === false) {
 					throw new \InvalidArgumentException('Variable "' . $name . '" is not defined.');
 				}
