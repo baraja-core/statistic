@@ -80,8 +80,7 @@ final class StatisticManager
 	{
 		$sql = (string) preg_replace_callback(
 			'/:([a-z0-9-]+)/',
-			static function (array $match) use ($variables): string
-			{
+			static function (array $match) use ($variables): string {
 				$name = $match[1] ?? '';
 				if (isset($variables[$name]) === false) {
 					throw new \InvalidArgumentException('Variable "' . $name . '" is not defined.');

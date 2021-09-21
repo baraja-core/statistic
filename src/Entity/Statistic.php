@@ -65,7 +65,7 @@ final class Statistic
 		}
 		$return = '';
 		foreach (explode("\n", $sql) as $line) { // rtrim all lines
-			$return .= ($return ? "\n" : '') . rtrim($line);
+			$return .= ($return !== '' ? "\n" : '') . rtrim($line);
 		}
 
 		return $return;

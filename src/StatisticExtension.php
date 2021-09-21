@@ -56,7 +56,8 @@ final class StatisticExtension extends CompilerExtension
 			]
 		);
 		$pluginManager->addSetup(
-			'?->addComponent(?)', [
+			'?->addComponent(?)',
+			[
 				'@self',
 				[
 					'key' => 'statisticTable',
