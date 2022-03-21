@@ -97,7 +97,7 @@ final class StatisticManager
 					? $value
 					: '\'' . addslashes($value) . '\'';
 			},
-			$sql
+			$sql,
 		);
 
 		$result = $this->entityManager->getConnection()

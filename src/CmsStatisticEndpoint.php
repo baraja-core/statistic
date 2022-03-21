@@ -33,7 +33,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 		$this->sendJson(
 			[
 				'statistics' => $return,
-			]
+			],
 		);
 	}
 
@@ -57,7 +57,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 				'values' => $valuesSql !== null
 					? $this->formatBootstrapSelectArray(
 						[null => '--- select ---']
-						+ $this->statisticManager->getPossibleValuesBySql($valuesSql)
+						+ $this->statisticManager->getPossibleValuesBySql($valuesSql),
 					)
 					: null,
 			];
@@ -69,13 +69,13 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 		$this->sendJson(
 			[
 				'fieldTypes' => $this->formatBootstrapSelectArray(
-					array_combine(StatisticField::TYPES, StatisticField::TYPES)
+					array_combine(StatisticField::TYPES, StatisticField::TYPES),
 				),
 				'fields' => $fields,
 				'variables' => $variables,
 				'usedAll' => $usedVariables === [],
 				'sql' => $statistic->getSql(),
-			]
+			],
 		);
 	}
 
@@ -126,7 +126,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 
 		$result = $this->statisticManager->executeSql(
 			$statistic->getSql(),
-			$variables
+			$variables,
 		);
 
 		$this->sendJson(
@@ -135,7 +135,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 					? array_keys($result[0])
 					: [],
 				'body' => $result,
-			]
+			],
 		);
 	}
 }

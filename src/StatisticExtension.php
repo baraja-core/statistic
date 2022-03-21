@@ -53,7 +53,7 @@ final class StatisticExtension extends CompilerExtension
 					'tab' => 'Statistic',
 					'params' => [],
 				],
-			]
+			],
 		);
 		$pluginManager->addSetup(
 			'?->addComponent(?)',
@@ -72,7 +72,7 @@ final class StatisticExtension extends CompilerExtension
 						'id',
 					],
 				],
-			]
+			],
 		);
 	}
 }
