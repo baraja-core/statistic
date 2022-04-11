@@ -28,7 +28,11 @@ final class Statistic
 	use TranslateObject;
 
 	#[Column(type: 'translate')]
-	private Translation $name;
+	protected Translation $name;
+
+	/** @var StatisticField[]|Collection */
+	#[OneToMany(mappedBy: 'statistic', targetEntity: StatisticField::class)]
+	protected $fields;
 
 	#[Column(name: '`sql`', type: 'text')]
 	private string $sql;
@@ -41,10 +45,6 @@ final class Statistic
 
 	#[Column(type: 'text', nullable: true)]
 	private ?string $resultCache = null;
-
-	/** @var StatisticField[]|Collection */
-	#[OneToMany(mappedBy: 'statistic', targetEntity: StatisticField::class)]
-	private $fields;
 
 
 	public function __construct(string $name, string $sql)

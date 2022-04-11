@@ -38,14 +38,14 @@ final class StatisticField
 		self::TYPE_ENUM,
 	];
 
+	#[Column(type: 'translate')]
+	protected Translation $label;
+
 	#[ManyToOne(targetEntity: Statistic::class)]
 	private Statistic $statistic;
 
 	#[Column(type: 'string', length: 32)]
 	private string $name;
-
-	#[Column(type: 'translate')]
-	private Translation $label;
 
 	#[Column(type: 'string', length: 16)]
 	private string $type;
