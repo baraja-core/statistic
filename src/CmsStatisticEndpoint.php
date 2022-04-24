@@ -69,7 +69,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 		$this->sendJson(
 			[
 				'fieldTypes' => $this->formatBootstrapSelectArray(
-					array_combine(StatisticField::TYPES, StatisticField::TYPES),
+					array_combine(StatisticField::Types, StatisticField::Types),
 				),
 				'fields' => $fields,
 				'variables' => $variables,
@@ -84,7 +84,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 	{
 		$this->statisticManager->create($name, $sql);
 		$this->entityManager->flush();
-		$this->flashMessage('Statistic has been created.', self::FLASH_MESSAGE_SUCCESS);
+		$this->flashMessage('Statistic has been created.', self::FlashMessageSuccess);
 		$this->sendOk();
 	}
 
@@ -94,7 +94,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 		$statistic = $this->statisticManager->getById($id);
 		$this->statisticManager->addField($statistic, $name, $type, $valuesSql);
 		$this->entityManager->flush();
-		$this->flashMessage('Field has been created.', self::FLASH_MESSAGE_SUCCESS);
+		$this->flashMessage('Field has been created.', self::FlashMessageSuccess);
 		$this->sendOk();
 	}
 
@@ -104,7 +104,7 @@ final class CmsStatisticEndpoint extends BaseEndpoint
 		$statistic = $this->statisticManager->getById($id);
 		$statistic->setSql($sql);
 		$this->entityManager->flush();
-		$this->flashMessage('SQL has been changed.', self::FLASH_MESSAGE_SUCCESS);
+		$this->flashMessage('SQL has been changed.', self::FlashMessageSuccess);
 		$this->sendOk();
 	}
 

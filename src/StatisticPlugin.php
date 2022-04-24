@@ -24,6 +24,6 @@ final class StatisticPlugin extends BasePlugin
 	public function actionDetail(int $id): void
 	{
 		$statistic = $this->statisticManager->getById($id);
-		$this->setTitle('(' . $id . ') ' . $statistic->getName());
+		$this->setTitle(sprintf('(%d) %s', $id, (string) $statistic->getName()));
 	}
 }

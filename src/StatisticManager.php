@@ -26,8 +26,8 @@ final class StatisticManager
 	 */
 	public function getList(): array
 	{
-		return $this->entityManager->getRepository(Statistic::class)
-			->findAll();
+		/** @phpstan-ignore-next-line */
+		return $this->entityManager->getRepository(Statistic::class)->findAll();
 	}
 
 
@@ -86,11 +86,11 @@ final class StatisticManager
 					return $match[0] ?? '';
 				}
 				if (isset($variables[$name]) === false) {
-					throw new \InvalidArgumentException('Variable "' . $name . '" is not defined.');
+					throw new \InvalidArgumentException(sprintf('Variable "%s" is not defined.', $name));
 				}
 				$value = (string) $variables[$name];
 				if ($value === '') {
-					throw new \InvalidArgumentException('Value of variable "' . $name . '" is mandatory.');
+					throw new \InvalidArgumentException(sprintf('Value of variable "%s" is mandatory.', $name));
 				}
 
 				return Validators::isNumeric($value)
@@ -136,7 +136,7 @@ final class StatisticManager
 		?string $valuesSql = null,
 	): StatisticField {
 		$field = new StatisticField($statistic, $name, $type);
-		if ($valuesSql === null && $field->getType() === StatisticField::TYPE_ENUM) {
+		if ($valuesSql === null && $field->getType() === StatisticField::TypeEnum) {
 			throw new \InvalidArgumentException('SQL for values is mandatory in case of field type is enum.');
 		}
 		try {
@@ -150,10 +150,12 @@ final class StatisticManager
 				->getQuery()
 				->getSingleResult();
 
-			throw new \InvalidArgumentException(
-				'Field name "' . $field->getName() . '" already exist for this statistic '
-				. '(' . $statistic->getId() . ') "' . $statistic->getName() . '".',
-			);
+			throw new \InvalidArgumentException(sprintf(
+				'Field name "%s" already exist for this statistic (%d) "%s".',
+				$field->getName(),
+				$statistic->getId(),
+				(string) $statistic->getName(),
+			));
 		} catch (NoResultException | NonUniqueResultException) {
 			// Silence is golden.
 		}

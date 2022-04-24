@@ -5,52 +5,52 @@ declare(strict_types=1);
 namespace Baraja\Statistic\Entity;
 
 
-use Baraja\Doctrine\Identifier\IdentifierUnsigned;
 use Baraja\Localization\TranslateObject;
 use Baraja\Localization\Translation;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Strings;
 
 /**
  * @method Translation getLabel(?string $locale = null)
  * @method void setLabel(string $label, ?string $locale = null)
  */
-#[Entity]
-#[Table(name: 'core__statistic_field')]
-final class StatisticField
+#[ORM\Entity]
+#[ORM\Table(name: 'core__statistic_field')]
+class StatisticField
 {
-	use IdentifierUnsigned;
 	use TranslateObject;
 
 	public const
-		TYPE_TEXT = 'text',
-		TYPE_INT = 'int',
-		TYPE_DATETIME = 'datetime',
-		TYPE_ENUM = 'enum';
+		TypeText = 'text',
+		TypeInt = 'int',
+		TypeDatetime = 'datetime',
+		TypeEnum = 'enum';
 
-	public const TYPES = [
-		self::TYPE_TEXT,
-		self::TYPE_INT,
-		self::TYPE_DATETIME,
-		self::TYPE_ENUM,
+	public const Types = [
+		self::TypeText,
+		self::TypeInt,
+		self::TypeDatetime,
+		self::TypeEnum,
 	];
 
-	#[Column(type: 'translate')]
+	#[ORM\Id]
+	#[ORM\Column(type: 'integer', unique: true, options: ['unsigned' => true])]
+	#[ORM\GeneratedValue]
+	protected int $id;
+
+	#[ORM\Column(type: 'translate')]
 	protected Translation $label;
 
-	#[ManyToOne(targetEntity: Statistic::class)]
+	#[ORM\ManyToOne(targetEntity: Statistic::class)]
 	private Statistic $statistic;
 
-	#[Column(type: 'string', length: 32)]
+	#[ORM\Column(type: 'string', length: 32)]
 	private string $name;
 
-	#[Column(type: 'string', length: 16)]
+	#[ORM\Column(type: 'string', length: 16)]
 	private string $type;
 
-	#[Column(type: 'text', nullable: true)]
+	#[ORM\Column(type: 'text', nullable: true)]
 	private ?string $valuesSql = null;
 
 
@@ -60,16 +60,19 @@ final class StatisticField
 		if ($name === '') {
 			throw new \InvalidArgumentException('Field name can not be empty.');
 		}
-		if (!in_array($type, self::TYPES, true)) {
-			throw new \InvalidArgumentException(
-				'Type "' . $type . '" is not valid option. '
-				. 'Did you mean "' . implode('", "', self::TYPES) . '"?',
-			);
+		if (!in_array($type, self::Types, true)) {
+			throw new \InvalidArgumentException(sprintf('Type "%s" is not valid option. Did you mean "%s"?', $type, implode('", "', self::Types)));
 		}
 		$this->statistic = $statistic;
 		$this->name = Strings::webalize($name);
 		$this->setLabel(Strings::firstUpper(str_replace('-', ' ', $name)));
 		$this->type = $type;
+	}
+
+
+	public function getId(): int
+	{
+		return $this->id;
 	}
 
 

@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Baraja\Statistic\Entity;
 
 
-use Baraja\Doctrine\Identifier\IdentifierUnsigned;
 use Baraja\Localization\TranslateObject;
 use Baraja\Localization\Translation;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 
@@ -20,30 +16,34 @@ use Nette\Utils\Validators;
  * @method Translation getName(?string $locale = null)
  * @method void setName(string $label, ?string $locale = null)
  */
-#[Entity]
-#[Table(name: 'core__statistic')]
-final class Statistic
+#[ORM\Entity]
+#[ORM\Table(name: 'core__statistic')]
+class Statistic
 {
-	use IdentifierUnsigned;
 	use TranslateObject;
 
-	#[Column(type: 'translate')]
+	#[ORM\Id]
+	#[ORM\Column(type: 'integer', unique: true, options: ['unsigned' => true])]
+	#[ORM\GeneratedValue]
+	protected int $id;
+
+	#[ORM\Column(type: 'translate')]
 	protected Translation $name;
 
-	/** @var StatisticField[]|Collection */
-	#[OneToMany(mappedBy: 'statistic', targetEntity: StatisticField::class)]
-	protected $fields;
+	/** @var Collection<StatisticField> */
+	#[ORM\OneToMany(mappedBy: 'statistic', targetEntity: StatisticField::class)]
+	protected Collection $fields;
 
-	#[Column(name: '`sql`', type: 'text')]
+	#[ORM\Column(name: '`sql`', type: 'text')]
 	private string $sql;
 
-	#[Column(type: 'datetime')]
+	#[ORM\Column(type: 'datetime')]
 	private \DateTimeInterface $insertedDate;
 
-	#[Column(type: 'datetime', nullable: true)]
+	#[ORM\Column(type: 'datetime', nullable: true)]
 	private ?\DateTimeInterface $lastIndex = null;
 
-	#[Column(type: 'text', nullable: true)]
+	#[ORM\Column(type: 'text', nullable: true)]
 	private ?string $resultCache = null;
 
 
@@ -70,6 +70,12 @@ final class Statistic
 		}
 
 		return $return;
+	}
+
+
+	public function getId(): int
+	{
+		return $this->id;
 	}
 
 
@@ -135,9 +141,9 @@ final class Statistic
 
 
 	/**
-	 * @return StatisticField[]|Collection
+	 * @return Collection<StatisticField>
 	 */
-	public function getFields()
+	public function getFields(): Collection
 	{
 		return $this->fields;
 	}
